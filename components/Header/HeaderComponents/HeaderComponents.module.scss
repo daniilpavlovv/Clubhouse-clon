@@ -1,0 +1,14 @@
+.button {
+  display: flex;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.module {
+  display: flex;
+  gap: 2.5rem;
+  align-items: center;
+}

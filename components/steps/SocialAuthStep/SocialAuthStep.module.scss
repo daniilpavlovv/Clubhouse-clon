@@ -1,0 +1,51 @@
+.avatar {
+  position: relative;
+
+  b {
+    position: absolute;
+    font-size: 2rem;
+    left: 50.5%;
+    top: 49.5%;
+    transform: translate(-50%, -50%);
+  }
+}
+
+.twitterBtn {
+  background-color: #1da1f2;
+  &:hover,
+  &:active {
+    background-color: #1a91da;
+  }
+}
+
+.twitterLogo {
+  position: relative;
+  top: 1px;
+  margin-right: 5px;
+}
+
+.githubBtn {
+  background-color: #24292e;
+  &:hover,
+  &:active {
+    background-color: lighten(#24292e, 10);
+  }
+}
+
+.githubLogo {
+  margin-right: 5px;
+}
+
+.skipBtn {
+  display: inline-block;
+  font-weight: 600;
+  font-size: 15px;
+  color: #4f6fa5;
+  height: auto;
+  background-color: transparent;
+
+  &:hover,
+  &:active {
+    background-color: transparent;
+  }
+}

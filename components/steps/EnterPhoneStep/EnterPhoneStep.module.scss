@@ -1,0 +1,26 @@
+.input {
+  position: relative;
+  img {
+    position: absolute;
+    left: 13%;
+    top: 49%;
+    transform: translate(-50%, -50%);
+  }
+
+  input {
+    font-size: 22px;
+    max-width: 250px;
+    padding-left: 55px;
+  }
+}
+
+.policyText {
+  font-size: 0.75rem !important;
+  line-height: 1.5 !important;
+  text-align: center;
+  color: #817f7a;
+
+  @media (max-height: 500px) {
+    display: none;
+  }
+}

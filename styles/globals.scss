@@ -1,0 +1,137 @@
+@import './display';
+@import './spacing';
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+
+  background-color: #f3efe4;
+  color: rgb(79, 79, 79);
+}
+
+::-webkit-scrollbar-track {
+  background-color: #f3efe4;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+  background-color: #ffffff;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #cccccc;
+  border-radius: 5px;
+  &:hover {
+    background-color: darken(#cccccc, 20%);
+  }
+}
+
+* {
+  box-sizing: border-box;
+  font-family: 'Nunito', -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu,
+    Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  outline: none;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  display: flex;
+}
+
+p {
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+}
+
+li {
+  margin: 0;
+  list-style: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+  color: rgb(51, 51, 51);
+}
+
+button {
+  user-select: none;
+  border: none;
+  background: transparent;
+  margin: 0;
+  padding: 0;
+  line-height: 0;
+  transition: all 0.15s ease-in-out;
+  cursor: pointer;
+}
+
+.link {
+  font-weight: 600;
+  font-size: 15px;
+  color: #4f6fa5;
+}
+
+.container {
+  margin: 62px auto;
+  padding: 20px 20px 60px;
+  max-width: 1240px;
+  width: 100%;
+}
+
+.field {
+  min-width: 100px;
+  height: 60px;
+  background: #ffffff;
+  border: 1px solid #e3e3e3;
+  box-sizing: border-box;
+  border-radius: 20px;
+  padding: 0 25px;
+  font-size: 20px;
+}
+
+.grid {
+  display: grid;
+  transition: all 0.15s ease-in-out;
+}
+
+.rooms {
+  grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+  gap: 20px;
+
+  @media (max-width: 360px) {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  }
+}
+
+.loader {
+  display: inline-block;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  border: 0.3rem solid rgba(#b1aa97, 0.3);
+  border-top-color: #b1aa97;
+  animation: 0.5s spin infinite linear;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.centering {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

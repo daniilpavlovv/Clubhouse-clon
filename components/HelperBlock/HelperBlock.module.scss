@@ -1,0 +1,12 @@
+.block {
+  display: grid;
+  gap: 1.875rem;
+  justify-content: center;
+  text-align: center;
+  padding: 0 15px;
+  max-width: 450px;
+
+  @media (max-height: 500px) {
+    margin-top: 25vh;
+  }
+}

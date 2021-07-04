@@ -1,40 +1,36 @@
-import React from 'react'
-import clsx from 'clsx'
+import React from 'react';
+import clsx from 'clsx';
 
-import styles from './Avatar.module.scss'
-import { useSelector } from 'react-redux'
-import { selectUserData } from '../../redux/selectors'
+import styles from './Avatar.module.scss';
 
 interface AvatarProps {
-  src?: string
-  width: string
-  height: string
-  className?: string
-  isVoice?: boolean
-  fullname?: string
+  avatarUrl?: string;
+  width: string;
+  height: string;
+  className?: string;
+  isVoice?: boolean;
+  fullname: string;
 }
 
 export const Avatar: React.FC<AvatarProps> = ({
-  src,
+  avatarUrl,
   width,
   height,
   className,
   isVoice,
   fullname,
 }) => {
-  const userData = useSelector(selectUserData)
-
   const avatarLetters = () => {
-    if (!src && !userData.avatarUrl) {
-      const name = fullname ? fullname : userData.fullname
+    if (!avatarUrl) {
+      const name = fullname;
       const letters = name
         .split(/\s+/)
         .slice(0, 2)
         .map((s) => s[0].toUpperCase())
-        .join('')
-      return letters
+        .join('');
+      return letters;
     }
-  }
+  };
 
   return (
     <>
@@ -65,12 +61,7 @@ export const Avatar: React.FC<AvatarProps> = ({
               fill="#E0E0E0"
             />
           </svg>
-          <image
-            href={src ? src : userData.avatarUrl}
-            width="100%"
-            height="100%"
-            mask="url(#msk1)"
-          />
+          <image href={avatarUrl} width="100%" height="100%" mask="url(#msk1)" />
         </svg>
         <div
           className={clsx(
@@ -89,5 +80,5 @@ export const Avatar: React.FC<AvatarProps> = ({
         </div>
       </div>
     </>
-  )
-}
+  );
+};

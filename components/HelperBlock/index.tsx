@@ -1,6 +1,5 @@
-import clsx from 'clsx';
 import styles from './HelperBlock.module.scss';
 
-export const HelperBlock = ({ children, className }) => {
-  return <div className={clsx(styles.block, className)}>{children}</div>;
+export const HelperBlock = ({ children }) => {
+  return <div className={styles.block}>{children}</div>;
 };

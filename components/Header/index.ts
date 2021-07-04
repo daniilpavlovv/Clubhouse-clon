@@ -1,4 +1,4 @@
-export { Header } from './Header'
+export { Header } from './Header';
 export {
   BackButton,
   BackLink,
@@ -6,5 +6,4 @@ export {
   SearchButton,
   BellButton,
   CalendarButton,
-  HeaderAvatar,
-} from './HeaderComponents'
+} from './HeaderComponents';

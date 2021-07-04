@@ -1,14 +1,18 @@
-import React from 'react'
-import { useSelector } from 'react-redux'
-import { selectUserData } from '../../redux/selectors'
+import React from 'react';
+import { Api } from '../../api';
+import { wrapper } from '../../redux/store';
+import { checkAuth } from '../../utils/checkAuth';
+import { GetServerSideProps, NextPage } from 'next';
+import { UserData } from '..';
 
-import { Profile } from '../../components/Profile'
-import { wrapper } from '../../redux/store'
-import { checkAuth } from '../../utils/checkAuth'
-import { GetServerSideProps } from 'next'
-import { Header, BackLink, MoreButton } from '../../components/Header'
+import { Header, BackLink, MoreButton } from '../../components/Header';
+import { Profile } from '../../components/Profile';
 
-export default function ProfilePages() {
+interface ProfilePageProps {
+  profileData: UserData;
+}
+
+const ProfilePages: NextPage<ProfilePageProps> = ({ profileData }) => {
   return (
     <>
       <Header>
@@ -16,37 +20,42 @@ export default function ProfilePages() {
         <MoreButton />
       </Header>
       <div className="container">
-        <Profile about="About" />
+        <Profile
+          avatarUrl={profileData.avatarUrl}
+          fullname={profileData.fullname}
+          username={profileData.username}
+          about="About"
+        />
       </div>
     </>
-  )
-}
+  );
+};
+
+export default ProfilePages;
 
 export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps(async (ctx) => {
   try {
-    const user = await checkAuth(ctx)
+    const user = await checkAuth(ctx);
 
-    if (!user) {
-      return {
-        props: {},
-        redirect: {
-          permanent: false,
-          destination: '/',
-        },
-      }
+    const userId = Number(ctx.query.id);
+    const profileData = await Api(ctx).getUserInfo(userId);
+
+    if (!user || !profileData) {
+      throw new Error();
     }
 
     return {
-      props: {},
-    }
+      props: {
+        profileData,
+      },
+    };
   } catch (error) {
-    console.log('ERROR!')
     return {
       props: {},
       redirect: {
         permanent: false,
-        destination: '/rooms',
+        destination: '/',
       },
-    }
+    };
   }
-})
+});

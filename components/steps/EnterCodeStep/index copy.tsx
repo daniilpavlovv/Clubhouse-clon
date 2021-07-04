@@ -3,7 +3,6 @@ import { Axios } from '../../../core/axios';
 import { useRouter } from 'next/router';
 import clsx from 'clsx';
 import Div100vh from 'react-div-100vh';
-import ReactCodeInput from 'react-verification-code-input-2';
 
 import { HelperBlock } from '../../HelperBlock';
 import { StepInfo } from '../../StepInfo';
@@ -13,15 +12,30 @@ import { Header, BackButton } from '../../Header';
 import styles from './EnterCodeStep.module.scss';
 
 export const EnterCodeStep: React.FC = () => {
-  const { onPreviousStep, onKeyBack, userData } = React.useContext(MainContext);
+  const { onPreviousStep, userData } = React.useContext(MainContext);
   const router = useRouter();
   const [codes, setCodes] = React.useState(['', '', '', '']);
   const [incorrectCode, setIncorrectCode] = React.useState<boolean>(false);
 
+  const handleChangeInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const index = +event.target.getAttribute('id');
+    const value = event.target.value;
+    setCodes((prev) => {
+      const newArr = [...prev];
+      newArr[index] = value;
+      return newArr;
+    });
+    if (event.target.nextSibling) {
+      (event.target.nextSibling as HTMLInputElement).focus();
+    } else {
+      onSubmit([...codes, value].join(''));
+    }
+  };
+
   const onSubmit = async (code: string) => {
     try {
-      console.log(code);
       setIncorrectCode(false);
+
       await Axios.post(`/auth/sms/activate`, {
         code,
         user: userData,
@@ -33,7 +47,11 @@ export const EnterCodeStep: React.FC = () => {
     }
   };
 
-  onKeyBack();
+  const inputRef = React.useRef<any>([React.createRef()]);
+
+  React.useEffect(() => {
+    inputRef.current[0].current.focus();
+  }, [incorrectCode]);
 
   return (
     <>
@@ -47,13 +65,21 @@ export const EnterCodeStep: React.FC = () => {
             title="Enter your activate code"
             description="We sent you a confirmation code"
           />
-          <ReactCodeInput
-            type={'number'}
-            fields={4}
-            onComplete={onSubmit}
-            values={codes}
-            className={clsx(styles.codeInput, incorrectCode ? styles.failed : '')}
-          />
+          <div className={clsx(styles.codeInput, incorrectCode ? styles.failed : '')}>
+            {codes.map((code, index) => (
+              <input
+                key={index}
+                placeholder=""
+                maxLength={1}
+                id={String(index)}
+                onChange={handleChangeInput}
+                value={code}
+                inputMode="numeric"
+                autoComplete="off"
+                ref={inputRef.current[index]}
+              />
+            ))}
+          </div>
         </HelperBlock>
       </Div100vh>
     </>

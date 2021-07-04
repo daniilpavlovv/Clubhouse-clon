@@ -10,6 +10,8 @@
   padding: 0 30px;
   font-size: 18px;
   cursor: pointer;
+  transition: 0.1s;
+  user-select: none;
 
   &__grid {
     display: flex;
@@ -18,17 +20,15 @@
   }
 
   &:disabled,
-  &:disabled:hover {
+  &:disabled:hover,
+  &:disabled:focus-visible {
     background-color: #cdcbc4;
     cursor: default;
+    pointer-events: none;
   }
 
-  &:hover {
-    background-color: lighten(#5677ad, 2%);
-  }
-
-  &:active {
-    background-color: darken(#5677ad, 1%);
+  &:active,
+  &:focus-visible {
     transform: translateY(1px);
   }
 }

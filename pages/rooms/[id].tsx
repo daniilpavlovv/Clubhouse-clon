@@ -1,63 +1,64 @@
-import React from 'react'
-import Link from 'next/link'
+import React from 'react';
+import Link from 'next/link';
+import { wrapper } from '../../redux/store';
+import { checkAuth } from '../../utils/checkAuth';
+import { GetServerSideProps, NextPage } from 'next';
+import { UserData } from '..';
+import { Room as RoomProps } from '../../api/RoomApi';
 
-import { Api } from '../../api'
+import { Api } from '../../api';
 
-import { Header, BackLink, HeaderAvatar } from '../../components/Header'
-import { Room } from '../../components/Room'
-import { wrapper } from '../../redux/store'
-import { checkAuth } from '../../utils/checkAuth'
-import { useSelector } from 'react-redux'
-import { selectUserData } from '../../redux/selectors'
-import { GetServerSideProps } from 'next'
+import { Header, BackLink } from '../../components/Header';
+import { Room } from '../../components/Room';
+import { Avatar } from '../../components/Avatar';
 
-export default function RoomPages({ room }) {
-  const userData = useSelector(selectUserData)
+interface RoomPagesProps {
+  user: UserData;
+  room: RoomProps;
+}
 
+const RoomPages: NextPage<RoomPagesProps> = ({ user, room }) => {
   return (
     <>
       <Header>
         <BackLink href="/rooms" />
-        <Link href={`/profile/${userData?.username}`}>
+        <Link href={`/profile/${user.username}`}>
           <a>
-            <HeaderAvatar />
+            <Avatar avatarUrl={user.avatarUrl} fullname={user.fullname} width="42" height="42" />
           </a>
         </Link>
       </Header>
       <Room title={room.title} />
     </>
-  )
-}
+  );
+};
+
+export default RoomPages;
 
 export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps(async (ctx) => {
   try {
-    const user = await checkAuth(ctx)
+    const user = await checkAuth(ctx);
 
     if (!user) {
-      return {
-        props: {},
-        redirect: {
-          permanent: false,
-          destination: '/',
-        },
-      }
+      throw new Error();
     }
 
-    const roomId = +ctx.query.id
-    const room = await Api(ctx).getRoom(roomId)
+    const roomId = Number(ctx.query.id);
+    const room = await Api(ctx).getRoom(roomId);
+
     return {
       props: {
+        user,
         room,
       },
-    }
+    };
   } catch (error) {
-    console.log('ERROR!')
     return {
       props: {},
       redirect: {
-        destination: '/rooms',
         permanent: false,
+        destination: '/rooms',
       },
-    }
+    };
   }
-})
+});

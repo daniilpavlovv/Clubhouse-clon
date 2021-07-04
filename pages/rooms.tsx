@@ -1,31 +1,41 @@
-import React from 'react'
-import { GetServerSideProps, NextPage } from 'next'
-import { Api } from '../api'
-import Link from 'next/link'
-import { checkAuth } from '../utils/checkAuth'
-import { useSelector } from 'react-redux'
-import { selectRooms, selectUserData } from '../redux/selectors'
-import { wrapper } from '../redux/store'
-import { setRooms } from '../redux/slices/roomsSlice'
+import React from 'react';
+import { GetServerSideProps, NextPage } from 'next';
+import { Api } from '../api';
+import Link from 'next/link';
+import { checkAuth } from '../utils/checkAuth';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectRooms, selectUserData } from '../redux/selectors';
+import { wrapper } from '../redux/store';
+import { setRooms, updateSpeakersInfo } from '../redux/slices/roomsSlice';
+import { setUserData } from '../redux/slices/userSlice';
+import { useSocket } from '../hooks/useSocket';
+import { UserData } from '.';
+import { Room } from '../api/RoomApi';
 
-import {
-  Header,
-  SearchButton,
-  CalendarButton,
-  BellButton,
-  HeaderAvatar,
-} from '../components/Header'
-import { RoomCard } from '../components/RoomCard'
-import { BottomMenu, StartButton } from '../components/BottomMenu'
-import { StartRoomModal } from '../components/StartRoomModal'
-import { InRoom } from '../components/BottomMenu/BottomMenuComponents/InRoom'
-import { setUserData } from '../redux/slices/userSlice'
+import { Header, SearchButton, CalendarButton, BellButton } from '../components/Header';
+import { RoomCard } from '../components/RoomCard';
+import { BottomMenu, StartButton } from '../components/BottomMenu';
+import { StartRoomModal } from '../components/StartRoomModal';
+import { InRoom } from '../components/BottomMenu/BottomMenuComponents/InRoom';
+import { Avatar } from '../components/Avatar';
 
-const RoomsPage: NextPage = () => {
-  const [visibleModal, setVisibleModal] = React.useState(false)
+interface RoomsPageProps {
+  user: UserData;
+  rooms: Room[];
+}
 
-  const userData = useSelector(selectUserData)
-  const rooms = useSelector(selectRooms)
+const RoomsPage: NextPage<RoomsPageProps> = ({ user, rooms }) => {
+  const [visibleModal, setVisibleModal] = React.useState(false);
+  console.log(user.isActive === 0);
+
+  const socket = useSocket();
+  const dispatch = useDispatch();
+
+  React.useEffect(() => {
+    socket.on('BECK#ROOM/UPDATE', ({ speakers, roomId }) => {
+      dispatch(updateSpeakersInfo({ speakers, roomId }));
+    });
+  }, []);
 
   return (
     <>
@@ -35,21 +45,20 @@ const RoomsPage: NextPage = () => {
         <div className="d-flex align-items-center g-50">
           <CalendarButton />
           <BellButton />
-          <Link href={`/profile/${userData.username}`}>
+          <Link href={`/profile/${user.id}`}>
             <a>
-              <HeaderAvatar />
+              <Avatar avatarUrl={user.avatarUrl} fullname={user.fullname} width="42" height="42" />
             </a>
           </Link>
         </div>
       </Header>
       <main className="container">
-        <section className="rooms grid">
+        <section className="roomsGrid">
           {rooms.map((obj) => (
             <Link key={obj.id} href={`/rooms/${obj.id}`}>
               <a>
                 <RoomCard
                   title={obj.title}
-                  avatars={[]}
                   speakers={obj.speakers}
                   listenersCount={obj.listenersCount}
                 />
@@ -60,41 +69,39 @@ const RoomsPage: NextPage = () => {
       </main>
       <BottomMenu>
         <StartButton onClick={() => setVisibleModal(true)} />
-        {/* <InRoom avatars={rooms[0].avatars} listenersCount={rooms[0].listenersCount} /> */}
+        {/* <InRoom avatars={rooms[0].avatars} fullname={rooms[0].fullname} listenersCount={rooms[0].listenersCount} /> */}
       </BottomMenu>
     </>
-  )
-}
+  );
+};
+
+export default RoomsPage;
 
 export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps(async (ctx) => {
   try {
-    const user = await checkAuth(ctx)
-    ctx.store.dispatch(setUserData(user))
+    const user = await checkAuth(ctx);
+    ctx.store.dispatch(setUserData(user));
 
     if (!user) {
-      return {
-        props: {},
-        redirect: {
-          permanent: false,
-          destination: '/',
-        },
-      }
+      throw new Error();
     }
 
-    const rooms = await Api(ctx).getRooms()
-    ctx.store.dispatch(setRooms(rooms))
+    const rooms = await Api(ctx).getRooms();
+    ctx.store.dispatch(setRooms(rooms));
 
-    return {
-      props: {},
-    }
-  } catch (error) {
-    console.log('ERROR!')
     return {
       props: {
-        rooms: [],
+        user,
+        rooms,
       },
-    }
+    };
+  } catch (error) {
+    return {
+      props: {},
+      redirect: {
+        permanent: false,
+        destination: '/',
+      },
+    };
   }
-})
-
-export default RoomsPage
+});

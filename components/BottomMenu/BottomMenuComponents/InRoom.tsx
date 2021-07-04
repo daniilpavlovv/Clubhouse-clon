@@ -1,17 +1,18 @@
-import React from 'react'
-import numbro from 'numbro'
-import { Avatar } from '../../Avatar'
+import React from 'react';
+import numbro from 'numbro';
+import { Avatar } from '../../Avatar';
 
-import styles from './BottomMenuComponents.module.scss'
+import styles from './BottomMenuComponents.module.scss';
 
 interface InRoomProps {
-  avatars: string[]
-  listenersCount: string
+  avatars: string[];
+  fullname: string;
+  listenersCount: string;
 }
 
-export const InRoom: React.FC<InRoomProps> = ({ avatars = [], listenersCount }) => {
-  const randomAvatars = avatars.sort(() => 0.5 - Math.random()).slice(0, 2)
-  const listenersRoundedCount = numbro(listenersCount).format({ average: true })
+export const InRoom: React.FC<InRoomProps> = ({ avatars = [], fullname, listenersCount }) => {
+  const randomAvatars = avatars.sort(() => 0.5 - Math.random()).slice(0, 2);
+  const listenersRoundedCount = numbro(listenersCount).format({ average: true });
 
   return (
     <>
@@ -20,9 +21,10 @@ export const InRoom: React.FC<InRoomProps> = ({ avatars = [], listenersCount }) 
           {randomAvatars.map((url, i) => (
             <Avatar
               key={url}
+              avatarUrl={url}
+              fullname={fullname}
               width="42"
               height="42"
-              src={url}
               className={
                 randomAvatars.length > 1 && i === randomAvatars.length - 1 ? 'lastAvatar' : 'first'
               }
@@ -48,5 +50,5 @@ export const InRoom: React.FC<InRoomProps> = ({ avatars = [], listenersCount }) 
         </div>
       </div>
     </>
-  )
-}
+  );
+};

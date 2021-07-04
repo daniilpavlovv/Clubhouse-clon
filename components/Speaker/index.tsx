@@ -1,19 +1,19 @@
-import React from 'react'
+import React from 'react';
 
-import { Avatar } from '../Avatar'
+import { Avatar } from '../Avatar';
 
-import styles from './Speaker.module.scss'
+import styles from './Speaker.module.scss';
 
 export interface SpeakerProps {
-  fullname: string
-  avatarUrl: string
+  avatarUrl?: string;
+  fullname: string;
 }
 
-export const Speaker: React.FC<SpeakerProps> = ({ fullname, avatarUrl }) => {
+export const Speaker: React.FC<SpeakerProps> = ({ avatarUrl, fullname }) => {
   return (
     <div>
-      <Avatar width="90" height="90" src={avatarUrl} fullname={fullname} />
+      <Avatar avatarUrl={avatarUrl} fullname={fullname} width="90" height="90" />
       <div className="">{fullname}</div>
     </div>
-  )
-}
+  );
+};

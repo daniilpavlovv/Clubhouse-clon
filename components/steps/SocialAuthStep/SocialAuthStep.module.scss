@@ -1,20 +1,18 @@
-.avatar {
-  position: relative;
-
-  b {
-    position: absolute;
-    font-size: 2rem;
-    left: 50.5%;
-    top: 49.5%;
-    transform: translate(-50%, -50%);
-  }
+.btnsWrapper {
+  display: flex;
+  justify-content: space-evenly;
 }
 
 .twitterBtn {
   background-color: #1da1f2;
-  &:hover,
-  &:active {
-    background-color: #1a91da;
+
+  &:hover {
+    background-color: lighten(#1da1f2, 2%);
+  }
+
+  &:active,
+  &:focus-visible {
+    background-color: darken(#1da1f2, 1%);
   }
 }
 
@@ -26,9 +24,14 @@
 
 .githubBtn {
   background-color: #24292e;
-  &:hover,
-  &:active {
-    background-color: lighten(#24292e, 10);
+
+  &:hover {
+    background-color: lighten(#24292e, 4%);
+  }
+
+  &:active,
+  &:focus-visible {
+    background-color: darken(#24292e, 2%);
   }
 }
 
@@ -38,14 +41,18 @@
 
 .skipBtn {
   display: inline-block;
+  padding: 0;
   font-weight: 600;
   font-size: 15px;
   color: #4f6fa5;
-  height: auto;
   background-color: transparent;
 
-  &:hover,
-  &:active {
-    background-color: transparent;
+  &:hover {
+    color: lighten(#4f6fa5, 4%);
+  }
+
+  &:active,
+  &:focus-visible {
+    color: darken(#4f6fa5, 2%);
   }
 }

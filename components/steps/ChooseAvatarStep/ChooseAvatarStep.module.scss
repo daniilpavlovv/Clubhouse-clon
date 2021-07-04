@@ -1,0 +1,29 @@
+.сhooseWrapper {
+  display: grid;
+  grid-gap: 15px;
+
+  .сhooseLabel {
+    transition: 0.2s;
+    cursor: pointer;
+    line-height: 0;
+
+    &:hover {
+      // transform: scale(5, 5);
+      transform: scale(1.05, 1.05);
+    }
+  }
+
+  .сhooseBtn {
+    font-weight: 600;
+    font-size: 15px;
+    color: #4f6fa5;
+    background-color: transparent;
+    cursor: pointer;
+    user-select: none;
+    transition: 0.1s;
+
+    &:hover {
+      color: lighten(#4f6fa5, 4%);
+    }
+  }
+}

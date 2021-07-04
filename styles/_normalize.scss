@@ -1,0 +1,76 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  font-family: 'Nunito', -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu,
+    Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  outline: none;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  scroll-behavior: smooth;
+  text-rendering: optimizeSpeed;
+  background-color: #f3efe4;
+  color: rgb(79, 79, 79);
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+ul,
+li,
+ol {
+  display: block;
+  list-style: none;
+  margin-block: 0;
+  padding-inline-start: 0;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+svg {
+  max-width: 100%;
+  display: block;
+}
+
+button {
+  display: block;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  outline: none;
+}
+
+input {
+  display: block;
+  border: none;
+  outline: none;
+}
+
+input[hidden] {
+  display: none;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: rgb(51, 51, 51);
+}

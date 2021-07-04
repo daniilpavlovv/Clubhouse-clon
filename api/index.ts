@@ -1,6 +1,5 @@
 import axios from 'axios'
 import Cookies from 'nookies'
-import { GetServerSidePropsContext } from 'next'
 import { UserApi } from './UserApi'
 import { RoomApi } from './RoomApi'
 

@@ -1,16 +1,16 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { HYDRATE } from 'next-redux-wrapper'
-import { Room, RoomApi, RoomType } from '../../api/RoomApi'
-import { Axios } from '../../core/axios'
-import { RootState } from '../types'
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { HYDRATE } from 'next-redux-wrapper';
+import { Room, RoomApi, RoomType } from '../../api/RoomApi';
+import { Axios } from '../../core/axios';
+import { RootState } from '../types';
 
 export type RoomsSliceState = {
-  items: Room[]
-}
+  items: Room[];
+};
 
 const initialState: RoomsSliceState = {
   items: [],
-}
+};
 
 export const fetchCreateRoom = createAsyncThunk<Room, { title: string; type: RoomType }>(
   'rooms/fetchCreateRoomStatus',
@@ -19,31 +19,42 @@ export const fetchCreateRoom = createAsyncThunk<Room, { title: string; type: Roo
       const room = await RoomApi(Axios).createRoom({
         title,
         type,
-      })
-      return room
+      });
+      return room;
     } catch (error) {
-      throw new Error('Failed Create Room')
+      throw new Error('Failed Create Room');
     }
   },
-)
+);
 
 export const roomsSlice = createSlice({
   name: 'rooms',
   initialState,
   reducers: {
     setRooms: (state, action: PayloadAction<Room[]>) => {
-      state.items = action.payload
+      state.items = action.payload;
+    },
+    updateSpeakersInfo: (
+      state,
+      action: PayloadAction<{ speakers: Room['speakers']; roomId: number }>,
+    ) => {
+      state.items = state.items.map((room) => {
+        if (room.id === action.payload.roomId) {
+          room.speakers = action.payload.speakers;
+        }
+        return room;
+      });
     },
   },
   extraReducers: (builder) =>
     builder
       .addCase(fetchCreateRoom.fulfilled.type, (state, action: PayloadAction<Room>) => {
-        state.items.push(action.payload)
+        state.items.push(action.payload);
       })
       .addCase(HYDRATE as any, (state, action: PayloadAction<RootState>) => {
-        state.items = action.payload.rooms.items
+        state.items = action.payload.rooms.items;
       }),
-})
+});
 
-export const { setRooms } = roomsSlice.actions
-export const roomsReducer = roomsSlice.reducer
+export const { setRooms, updateSpeakersInfo } = roomsSlice.actions;
+export const roomsReducer = roomsSlice.reducer;

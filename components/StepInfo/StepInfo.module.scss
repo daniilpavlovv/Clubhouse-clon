@@ -1,8 +1,16 @@
-.title {
-  font-size: 1.25rem;
+.wrapperImg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  img {
+    width: 40px;
+    height: 40px;
+    user-select: none;
+  }
 }
 
-.img {
-  width: 2.5rem;
-  height: 2.5rem;
+.title {
+  margin: 5px 0;
+  font-size: 20px;
 }

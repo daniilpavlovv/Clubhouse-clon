@@ -35,6 +35,3 @@ yarn-error.log*
 
 # Windows meta
 *.ini
-
-# Users Data
-/public/users_data/avatars

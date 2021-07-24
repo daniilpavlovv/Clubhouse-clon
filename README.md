@@ -20,3 +20,18 @@ Backend:
 - Multer
 - PostgreSQL
 
+**Launch:**
+
+- Create a "clubhouse" database in PostgreSQL
+- Running migrations
+```
+yarn migrate
+```
+- Run development server
+```
+yarn dev
+```
+- Run NodeJS server
+```
+yarn server
+```

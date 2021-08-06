@@ -37,3 +37,8 @@ yarn dev
 ```
 yarn server
 ```
+**Screenshots:**
+
+<img src="https://i.ibb.co/LnY19VM/screencapture-localhost-3000-rooms-2021-08-06-15-12-39.png" alt="screencapture-localhost-3000-rooms-2021-08-06-15-12-39" border="0">
+
+<img src="https://i.ibb.co/DtVZm89/screencapture-192-168-31-75-3000-2021-08-06-13-50-48.png" alt="screencapture-192-168-31-75-3000-2021-08-06-13-50-48" border="0">

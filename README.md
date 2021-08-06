@@ -1,6 +1,6 @@
 # Clubhouse clon
 
-<img srs='https://i.ibb.co/37rnVMp/screencapture-192-168-31-75-3000-2021-08-06-13-50-48.png' alt='Clubhouse'>
+<img src="https://i.ibb.co/GQGdXvZ/screencapture-localhost-3000-rooms-2-2021-08-06-15-13-16.png" alt="screencapture-localhost-3000-rooms-2-2021-08-06-15-13-16" border="0">
 
 **Stack:**
 

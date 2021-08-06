@@ -1,6 +1,6 @@
-@import './normalize';
-@import './display';
-@import './spacing';
+@import "./normalize";
+@import "./display";
+@import "./spacing";
 
 ::-webkit-scrollbar-track {
   background-color: #f3efe4;
@@ -28,11 +28,11 @@
 
 .roomsGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
   gap: 20px;
 
   @media (max-width: 360px) {
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
   }
 }
 

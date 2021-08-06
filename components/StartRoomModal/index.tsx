@@ -1,31 +1,31 @@
-import React from 'react'
-import { useRouter } from 'next/router'
-import { fetchCreateRoom } from '../../redux/slices/roomsSlice'
-import { RoomType } from '../../api/RoomApi'
-import { useAsyncAction } from '../../hooks/useAction'
+import React from "react";
+import { useRouter } from "next/router";
+import { fetchCreateRoom } from "../../redux/slices/roomsSlice";
+import { RoomType } from "../../api/RoomApi";
+import { useAsyncAction } from "../../hooks/useAction";
 
-import { Button } from '../Button'
+import { Button } from "../Button";
 
-import styles from './StartRoomModal.module.scss'
+import styles from "./StartRoomModal.module.scss";
 
 interface StartRoomModalProps {
-  onClose: () => void
+  onClose: () => void;
 }
 
 export const StartRoomModal: React.FC<StartRoomModalProps> = ({ onClose }) => {
-  const router = useRouter()
-  const createRoom = useAsyncAction(fetchCreateRoom)
+  const router = useRouter();
+  const createRoom = useAsyncAction(fetchCreateRoom);
 
-  const [title, setTitle] = React.useState<string>('')
-  const [type, setType] = React.useState<RoomType>('open')
+  const [title, setTitle] = React.useState<string>("");
+  const [type, setType] = React.useState<RoomType>("open");
 
   const onSubmit = async () => {
     if (!title) {
-      return alert('title')
+      return alert("title");
     }
-    const data = await createRoom({ title, type })
-    router.push(`/rooms/${data.id}`)
-  }
+    const data = await createRoom({ title, type });
+    router.push(`/rooms/${data.id}`);
+  };
 
   return (
     <div className={styles.overlay}>
@@ -53,33 +53,56 @@ export const StartRoomModal: React.FC<StartRoomModalProps> = ({ onClose }) => {
         </div>
         <div className={styles.types}>
           <button
-            onClick={() => setType('open')}
-            className={type === 'open' ? styles.selected : ''}>
-            <img width="70px" height="70px" src="/static/room-type-1.png" alt="Room type" />
+            onClick={() => setType("open")}
+            className={type === "open" ? styles.selected : ""}
+          >
+            <img
+              width="70px"
+              height="70px"
+              src="/static/room-type-1.png"
+              alt="Room type"
+            />
             <h5>Open</h5>
           </button>
           <button
-            onClick={() => setType('social')}
-            className={type === 'social' ? styles.selected : ''}>
-            <img width="70px" height="70px" src="/static/room-type-2.png" alt="Room type" />
+            onClick={() => setType("social")}
+            className={type === "social" ? styles.selected : ""}
+          >
+            <img
+              width="70px"
+              height="70px"
+              src="/static/room-type-2.png"
+              alt="Room type"
+            />
             <h5>Social</h5>
           </button>
           <button
-            onClick={() => setType('closed')}
-            className={type === 'closed' ? styles.selected : ''}>
-            <img width="70px" height="70px" src="/static/room-type-3.png" alt="Room type" />
+            onClick={() => setType("closed")}
+            className={type === "closed" ? styles.selected : ""}
+          >
+            <img
+              width="70px"
+              height="70px"
+              src="/static/room-type-3.png"
+              alt="Room type"
+            />
             <h5>Closed</h5>
           </button>
         </div>
         <div className={styles.delimiter}></div>
-        <div className="">
+        <div className={styles.bottom}>
           <h3>Start a room open to everyone</h3>
           <Button onClick={onSubmit} color="green">
-            <img width="18px" height="18px" src="/static/celebration.png" alt="Celebration" />
+            <img
+              width="18px"
+              height="18px"
+              src="/static/celebration.png"
+              alt="Celebration"
+            />
             Let's go
           </Button>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};

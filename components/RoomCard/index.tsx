@@ -14,7 +14,7 @@ interface RoomCardProps {
 }
 
 export const RoomCard: React.FC<RoomCardProps> = ({ title, speakers = [], listenersCount }) => {
-  // // const randomAvatars = avatars.sort(() => 0.5 - Math.random()).slice(0, 2)
+  // const randomAvatars = avatars.sort(() => 0.5 - Math.random()).slice(0, 2)
   // const listenersRoundedCount = numbro(listenersCount).format({ mantissa: 1, average: true })
 
   return (

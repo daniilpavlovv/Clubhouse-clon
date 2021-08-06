@@ -1,14 +1,14 @@
-import React from 'react';
-import Peer from 'simple-peer';
-import { useSelector } from 'react-redux';
-import { selectUserData } from '../../redux/selectors';
-import { useRouter } from 'next/router';
-import { UserData } from '../../pages';
-import { useSocket } from '../../hooks/useSocket';
+import React from "react";
+import Peer from "simple-peer";
+import { useSelector } from "react-redux";
+import { selectUserData } from "../../redux/selectors";
+import { useRouter } from "next/router";
+import { UserData } from "../../pages";
+import { useSocket } from "../../hooks/useSocket";
 
-import { Speaker } from '../Speaker';
+import { Speaker } from "../Speaker";
 
-import styles from './Room.module.scss';
+import styles from "./Room.module.scss";
 
 interface RoomProps {
   title: string;
@@ -24,7 +24,7 @@ export const Room: React.FC<RoomProps> = ({ title }) => {
   const user = useSelector(selectUserData);
 
   React.useEffect(() => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       // SimplePeer
 
       navigator.mediaDevices
@@ -32,23 +32,26 @@ export const Room: React.FC<RoomProps> = ({ title }) => {
           audio: true,
         })
         .then((stream) => {
-          socket.emit('FRONT@ROOM/USER_JOIN', {
+          socket.emit("FRONT@ROOM/USER_JOIN", {
             user,
             roomId,
           });
 
-          socket.on('BECK#ROOM/USER_JOIN', (allUsers: UserData[]) => {
+          socket.on("BECK#ROOM/USER_JOIN", (allUsers: UserData[]) => {
             setUsers(allUsers);
             allUsers.forEach((speaker) => {
-              if (user.id !== speaker.id && !peers.find((obj) => obj.id === speaker.id)) {
+              if (
+                user.id !== speaker.id &&
+                !peers.find((obj) => obj.id === speaker.id)
+              ) {
                 const peerIncome = new Peer({
                   initiator: true,
                   trickle: false,
                   stream: stream,
                 });
 
-                peerIncome.on('signal', (signal) => {
-                  socket.emit('FRONT@ROOM/USER_CALL', {
+                peerIncome.on("signal", (signal) => {
+                  socket.emit("FRONT@ROOM/USER_CALL", {
                     targetUserId: speaker.id,
                     callerUserId: user.id,
                     roomId,
@@ -65,7 +68,7 @@ export const Room: React.FC<RoomProps> = ({ title }) => {
           });
 
           socket.on(
-            'BECK#ROOM/USER_CALL',
+            "BECK#ROOM/USER_CALL",
             ({ targetUserId, callerUserId, signal: callerSignal }) => {
               const peerOutcome = new Peer({
                 initiator: false,
@@ -76,8 +79,8 @@ export const Room: React.FC<RoomProps> = ({ title }) => {
               peerOutcome.signal(callerSignal);
 
               peerOutcome
-                .on('signal', (outSignal) => {
-                  socket.emit('FRONT@ROOM/USER_ANSWER', {
+                .on("signal", (outSignal) => {
+                  socket.emit("FRONT@ROOM/USER_ANSWER", {
                     targetUserId: Number(callerUserId),
                     callerUserId: Number(targetUserId),
                     roomId,
@@ -85,48 +88,52 @@ export const Room: React.FC<RoomProps> = ({ title }) => {
                   });
                 })
 
-                .on('stream', (stream) => {
-                  document.querySelector('audio').srcObject = stream;
-                  document.querySelector('audio').play();
+                .on("stream", (stream) => {
+                  document.querySelector("audio").srcObject = stream;
+                  document.querySelector("audio").play();
                 });
-            },
+            }
           );
 
-          socket.on('BECK#ROOM/USER_ANSWER', ({ callerUserId, signal }) => {
-            const obj = peers.find((obj) => Number(obj.id) === Number(callerUserId));
+          socket.on("BECK#ROOM/USER_ANSWER", ({ callerUserId, signal }) => {
+            const obj = peers.find(
+              (obj) => Number(obj.id) === Number(callerUserId)
+            );
             if (obj) {
               obj.peer.signal(signal);
             }
           });
 
-          socket.on('BECK#ROOM/USER_LEAVE', (leaveUser: UserData) => {
+          socket.on("BECK#ROOM/USER_LEAVE", (leaveUser: UserData) => {
             setUsers((prev) =>
               prev.filter((prevUser) => {
-                const peerUser = peers.find((obj) => Number(obj.id) === Number(leaveUser.id));
+                const peerUser = peers.find(
+                  (obj) => Number(obj.id) === Number(leaveUser.id)
+                );
                 if (peerUser) {
                   peerUser.peer.destroy();
                 }
                 return prevUser.id !== leaveUser.id;
-              }),
+              })
             );
           });
         })
         .catch(() => {
-          console.error('No access!');
+          console.error("No access!");
         });
 
       // SocketIO
 
-      socket.emit('FRONT@ROOM/USER_JOIN', {
+      socket.emit("FRONT@ROOM/USER_JOIN", {
         roomId,
         user,
       });
 
-      socket.on('BECK#ROOM/USER_LEAVE', (user: UserData) => {
+      socket.on("BECK#ROOM/USER_LEAVE", (user: UserData) => {
         setUsers((prev) => prev.filter((obj) => obj.id !== user.id));
       });
 
-      socket.on('BECK#ROOM/USER_JOIN', (allUsers) => {
+      socket.on("BECK#ROOM/USER_JOIN", (allUsers) => {
         setUsers(allUsers);
       });
     }
@@ -135,13 +142,13 @@ export const Room: React.FC<RoomProps> = ({ title }) => {
   return (
     <>
       <div className={styles.wrapper}>
-        <audio controls />
+        <audio className={styles.audio} controls />
         <div className="styles.container">
           <div className="d-flex align-items-center justify-content-between">
             <h2>{title}</h2>
           </div>
 
-          <div className="styles.users">
+          <div className={styles.users}>
             {users.map((obj) => (
               <Speaker key={obj.id} {...obj} />
             ))}

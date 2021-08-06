@@ -1,74 +1,74 @@
-import passport from 'passport'
-import { Strategy as GitHubStrategy } from 'passport-github2'
-import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt'
+import passport from "passport";
+import { Strategy as GitHubStrategy } from "passport-github2";
+import { Strategy as JwtStrategy, ExtractJwt } from "passport-jwt";
 
-import { User } from '../../models'
-import { UserData } from '../../pages'
-import { createJwtToken } from '../../utils/createJwtToken'
+import { User } from "../../models";
+import { UserData } from "../../pages";
+import { createJwtToken } from "../../utils/createJwtToken";
 
 const opts = {
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
   secretOrKey: process.env.JWT_SECRET_KEY,
-}
+};
 
 passport.use(
-  'jwt',
+  "jwt",
   new JwtStrategy(opts, (jwt_payload, done) => {
-    done(null, jwt_payload.data)
-  }),
-)
+    done(null, jwt_payload.data);
+  })
+);
 
 passport.use(
-  'github',
+  "github",
   new GitHubStrategy(
     {
       clientID: process.env.GITHUB_CLIENT_ID,
       clientSecret: process.env.GITHUB_CLIENT_SECRET,
-      callbackURL: 'http://192.168.31.75:3001/auth/github/callback',
+      callbackURL: `http://localhost:5000/auth/github/callback`,
     },
     async (_: unknown, __: unknown, profile, done) => {
       try {
-        let userData: UserData
-        const obj: Omit<UserData, 'id'> = {
+        let userData: UserData;
+        const obj: Omit<UserData, "id"> = {
           fullname: profile.displayName,
           avatarUrl: profile.photos?.[0].value,
           isActive: 0,
           username: profile.username,
-          phone: '',
-        }
+          phone: "",
+        };
 
         const findUser = await User.findOne({
           where: {
             username: obj.username,
           },
-        })
+        });
 
         if (!findUser) {
-          const user = await User.create(obj)
-          userData = user.toJSON()
+          const user = await User.create(obj);
+          userData = user.toJSON();
         } else {
-          userData = await findUser.toJSON()
+          userData = await findUser.toJSON();
         }
 
         done(null, {
           ...userData,
           token: createJwtToken(userData),
-        })
+        });
       } catch (error) {
-        done(error)
+        done(error);
       }
-    },
-  ),
-)
+    }
+  )
+);
 
 passport.serializeUser(function (user, done) {
-  done(null, user.id)
-})
+  done(null, user.id);
+});
 
 passport.deserializeUser(function (id, done) {
   User.findById(id, function (err, user) {
-    err ? done(err) : done(null, user)
-  })
-})
+    err ? done(err) : done(null, user);
+  });
+});
 
-export { passport }
+export { passport };

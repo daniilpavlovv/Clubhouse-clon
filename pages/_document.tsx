@@ -1,16 +1,20 @@
-import Document, { Html, Head, Main, NextScript } from 'next/document'
+import Document, { Html, Head, Main, NextScript } from "next/document";
 
 class AppDocument extends Document {
   static async getInitialProps(ctx) {
-    const initialProps = await Document.getInitialProps(ctx)
-    return { ...initialProps }
+    const initialProps = await Document.getInitialProps(ctx);
+    return { ...initialProps };
   }
 
   render() {
     return (
       <Html>
         <Head>
-          <link rel="icon" type="image/png" href="http://192.168.31.75:3000/logo.png" />
+          <link
+            rel="icon"
+            type="image/png"
+            href="http://localhost:3000/logo.png"
+          />
           <meta name="theme-color" content="#f3efe4" />
           <link rel="preconnect" href="https://fonts.gstatic.com" />
           <link
@@ -23,8 +27,8 @@ class AppDocument extends Document {
           <NextScript />
         </body>
       </Html>
-    )
+    );
   }
 }
 
-export default AppDocument
+export default AppDocument;

@@ -4,10 +4,10 @@
   height: 100vh;
   border-radius: 40px 40px 0 0;
   margin: 82px auto 0;
-  padding: 15px;
+  padding: 20px 25px;
 
   h2 {
-    font-size: 1.25rem;
+    font-size: 24px;
   }
 }
 
@@ -15,6 +15,10 @@
   button {
     font-size: 16px;
   }
+}
+.audio {
+  position: fixed;
+  bottom: 20px;
 }
 
 .leaveButton {
@@ -29,14 +33,9 @@
   }
 }
 
-.user {
-  display: inline-flex;
-  flex-direction: column;
-  text-align: center;
-  margin-right: 50px;
-
-  b {
-    font-size: 18px;
-    margin-top: 10px;
-  }
+.users {
+  padding: 30px 30px 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 20px;
 }
